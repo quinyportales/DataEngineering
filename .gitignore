@@ -1,4 +1,5 @@
 
+
 # Ignorar archivos .env 
 *.env
 
@@ -21,3 +22,6 @@ __pycache__/
 # Ignorar carpetas tmp o archivos temporales
 tmp/
 *.tmp
+env/
+
+*.pyc
