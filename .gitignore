@@ -1,27 +1,51 @@
 
-
-# Ignorar archivos .env 
-*.env
-
-# Ignorar archivos .vs
-*.vs
-
-# Ignorar carpetas __pycache__ 
+# Python
+*.pyc
+*.pyo
+*.pyd
 __pycache__/
+*.db
 
-# Ignorar archivos .log 
+# Virtualenv
+venv/
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+
+# Virtualenv
+venv/
+env2/
+.venv/
+.env/
+
+# IDEs y editores de código
+.vscode/
+.idea/
+
+# Archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de log
 *.log
 
-# Ignorar archivos .sln
-*.sln
-
-# Ignorar archivos pyproj
-*.pyproj
-*.pyproj.user
-
-# Ignorar carpetas tmp o archivos temporales
-tmp/
-*.tmp
+# Archivos de configuración específicos
+.pylintrc
 env/
+.venv/
+.env/
 
-*.pyc
+# IDEs 
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+#log
+*.log
+
