@@ -13,8 +13,7 @@ if __name__=='__main__':
     plane1 = Plane(150, 2, 'Helicopter')
     plane2 = Plane(200, 100, 'Airplane')
     elec_car1 = ElectricCar(max_speed=120, model="Model S", brand="Tesla", battery_voltage=800)
-   
-    
+
     #printing the classes and super classes
     instances_list.extend([car1, ship1, train1, plane1, plane2, elec_car1])
     for instance in instances_list:
@@ -30,13 +29,13 @@ if __name__=='__main__':
 
     #Total of transports created
     print(Transport.get_total_vehicles())
-    
+
     #Checking  the magic method
-    print (f'\n Printing the len for car1 and train1:\n')
+    print ('\n Printing the len for car1 and train1:\n')
     print (f'Len of car 1 {len(car1)}')
     print (f'Len of train 1 {len(train1)}\n')
 
-    print (f'Are plane1 and plane2 equals?')
+    print ('Are plane1 and plane2 equals?')
     print (plane1 == plane2)
     print(f'Comparing {plane1.type_of_plane} with {plane2.type_of_plane}\n')
 

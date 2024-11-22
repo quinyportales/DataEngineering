@@ -1,0 +1,23 @@
+
+# Ignorar archivos .env 
+*.env
+
+# Ignorar archivos .vs
+*.vs
+
+# Ignorar carpetas __pycache__ 
+__pycache__/
+
+# Ignorar archivos .log 
+*.log
+
+# Ignorar archivos .sln
+*.sln
+
+# Ignorar archivos pyproj
+*.pyproj
+*.pyproj.user
+
+# Ignorar carpetas tmp o archivos temporales
+tmp/
+*.tmp
