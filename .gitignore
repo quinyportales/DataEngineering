@@ -1,5 +1,7 @@
 # Ignorar archivos .env 
 *.env
+venv/
+
 
 # Ignorar archivos .vs
 *.vs
@@ -20,3 +22,6 @@ __pycache__/
 # Ignorar carpetas tmp o archivos temporales
 tmp/
 *.tmp
+
+Algorithms/venv/
+ExceptionContexMan.lnk
