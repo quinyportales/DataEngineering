@@ -1,5 +1,7 @@
 # Ignorar archivos .env 
 *.env
+venv/
+
 
 # Ignorar archivos .vs
 *.vs
