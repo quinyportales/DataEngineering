@@ -1,34 +1,33 @@
 """
-1. You need to write a function that will convert the specified number to the specified number system.
-The function takes two arguments as input: a number and a number system.
+1. You need to write a function that will convert the 
+specified number to the specified number system.
+The function takes two arguments as input: a number 
+and a number system.
 
 Expected output:
     B13
     101100010011
 """
-
 from functools import reduce
-from math import remainder
-from typing import Union
+from typing import Any, Callable, Union
 import time
 
 
-def convert_to(num: int, base: int) -> Union[str, int]:
-    if base >= 2 and base <= 16:
+def convert_to(num: int, base: int) -> Union[str, None]:
+    """Converts an integer to a different numerical system"""
+    if 2 <= base <= 16:
         # Range to represent any numerical system
         digits = "0123456789ABCDEF"
         division = num
         converted = ''
-        
         while division > 0:
             remainder = division % base
             converted = digits[remainder] + converted
-            # Floor division 
-            division //= base  
-            
+            # Floor division
+            division //= base
         return converted
-    else:
-        print("Base must be a number between 2 and 16")
+    print("Base must be a number between 2 and 16")
+    return None
 
 print(convert_to(2835, 16))
 print(convert_to(2835, 2))
@@ -43,6 +42,7 @@ Expected output:
 
 
 def sum_recursive_list(data: list) -> int:
+    """Sums all the elements from a list"""
     total = 0
     for elem in data:
         if isinstance(elem, list):
@@ -51,7 +51,6 @@ def sum_recursive_list(data: list) -> int:
         else:
             total += elem
     return total
-  
 
 print(sum_recursive_list([1, 2, [3, 4], [5, 6, [2, 3, 4]]]))
 
@@ -65,8 +64,8 @@ Expected output:
     25
 """
 
-
 def calculate_gcd(a: int, b: int) -> int:
+    """Calculates the  greatest common divisor (gcd)"""
     #Euclides algorithm
     while b != 0:
         a, b = b, a % b
@@ -92,8 +91,8 @@ Expected output:
     ]
 """
 
-
 def get_pascal_triangle(n: int) -> list:
+    """returns the first n rows of Pascal's triangle"""
     triangle = []
 
     for i in range(n):
@@ -109,27 +108,27 @@ def get_pascal_triangle(n: int) -> list:
 print(get_pascal_triangle(6))
 
 """
-5. You need to write a program to find whether a given string starts with a given character using Lambda.
+5. You need to write a program to find whether a given string starts 
+with a given character using Lambda.
 The function takes a word and a letter as input.
 
 Expected output:
     True
     False
 """
-
-starts_with = lambda word,char: word[0]==char 
+starts_with = lambda word,char: word[0]==char
 print(starts_with('Python', 'P'))
 print(starts_with('Java', 'P'))
 
 """
-6. You need to write a program to create Fibonacci series upto n using Lambda and reduce. It's a hard task.
-The function takes as input the number of Fibonacci numbers to be calculated.
+6. You need to write a program to create Fibonacci 
+series upto n using Lambda and reduce. It's a hard task.
+The function takes as input the number of Fibonacci 
+numbers to be calculated.
 
 Expected output:
     [0, 1, 1, 2, 3, 5]
 """
-
-from functools import reduce
 
 #base condition [0, 1]
 fib_series =  lambda n: reduce(lambda acc, _: acc + [acc[-1] + acc[-2]], range(n - 2), [0, 1])
@@ -150,11 +149,13 @@ You are given two lists, the result will be a list-intersection of the given one
 Expected output:
     [1, 2, 8, 9]
 """
+def intersection(arr1: list[int], arr2: list[int]) -> list[int]:
+    """returns the intersection of two given arrays"""
+    return list(filter(lambda i: i in arr1, arr2))
 
 first = [1, 2, 3, 5, 7, 8, 9, 10]
 second = [1, 2, 4, 8, 9]
-result = list(filter(lambda i: i in first, second))
-print(result)
+print(intersection(first, second))
 
 """
 8. You need write a program to find palindromes in a given list of strings using Lambda and filter.
@@ -194,32 +195,33 @@ Expected output:
 
 
 def make_bold(func):
+    """function decorators bold"""
     def wrapper():
-        result=func()
-        return ('<b>'+ result+ '</b>')
+        result = func()
+        return '<b>'+ result+ '</b>'
     return wrapper
-
 
 
 def make_italic(func):
+    """function decorators italic"""
     def wrapper():
-        result=func()
-        return ('<i>'+ result+ '</i>')
+        result = func()
+        return '<i>'+ result+ '</i>'
     return wrapper
 
 def make_underline(func):
+    """function decorators underline"""
     def wrapper():
-        result=func()
-        return ('<u>'+ result+ '</u>')
+        result = func()
+        return '<u>'+ result+ '</u>'
     return wrapper
-
 
 @make_bold
 @make_italic
 @make_underline
 def hello():
+    """function to decorate"""
     return "Hello world"
-
 
 print(hello())
 
@@ -236,11 +238,12 @@ Expected output:
 
 
 def timeit(fun):
+    """decorator to calculates the execution time of the function"""
     def wrapper(*args, **kwargs):
         time_ini = time.time()
         fun(*args, **kwargs)
         time_fin = time.time()
-        exec_time= time_fin - time_ini
+        exec_time = time_fin - time_ini
         print(f'{fun} finished in {exec_time}')
         return fun(*args, **kwargs)
     return wrapper
@@ -250,34 +253,24 @@ def timeit(fun):
 
 
 class Timeit:
-    def __init__(self, fun):
-        self.fun= fun
-    def __call__(self, *args, **kwds):
+    """calculates the execution time of the function"""
+    def __init__(self, fun: Callable):
+        self.fun = fun
+    def __call__(self, *args : Any, **kwargs : Any) -> Any:
         self.time_ini = time.time() #when class is called this is initialized
         self.time_fin = time.time() #fun ran, we got the time
         print(f'{self.fun} finished in {self.time_fin - self.time_ini}')
-        return self.fun(*args, **kwds)
-        
+        return self.fun(*args, **kwargs)
 
 @timeit
-def sum_linear_progression(n):
+def sum_linear_progression(n:int) -> int:
+    """function to test"""
     return sum(range(n + 1))
-
-'''
-@Timeit
-def sum_linear_progression(n):
-    return sum(range(n + 1))
-'''
 
 @timeit
-def sum_linear_progression(n):
-    return sum(range(n + 1))
-
-
-@timeit
-def sum_constant_progression(n):
+def sum_constant_progression(n:int) -> int:
+    """function to test"""
     return n * (n + 1) // 2
-
 
 print(sum_linear_progression(100_000_000))
 print(sum_constant_progression(100_000_000))
