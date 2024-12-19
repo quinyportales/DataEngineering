@@ -1,3 +1,11 @@
+"""Context manager and exception module"""
+import logging
+import re
+logging.basicConfig(level=logging.DEBUG,
+                    filename='app.log',
+                    format = '%(asctime)s: %(levelname)s: %(message)s: %(lineno)d:%(funcName)s ')
+
+
 """
 1. You're going to write an interactive calculator! User input is assumed to be a formula that consist of a number,
 an operator (at least + and -), and another number, separated by white space (e.g. 1 + 1).
@@ -18,16 +26,12 @@ Excepted output:
     >> quit
 """
 
-from ast import pattern
-from turtle import mode
-from unittest import result
-
-
 class FormulaError(Exception):
-    'Handles formula errors'
+    """Handles formula errors"""
     pass
 
 def parse_input(input_str: str) -> tuple:
+    """Split user input"""
     if len(input_str.split()) != 3:
         raise FormulaError ('Inputs must contains 3 elements')
     try:
@@ -37,23 +41,26 @@ def parse_input(input_str: str) -> tuple:
     except ValueError:
         raise FormulaError('First and third elements must be numbers')
 
-
 def calculate(term_1: float, op: str, term_2: float) -> float:
+    """perform the calculation"""
     if op not in ['+', '-']:
         raise FormulaError ('Invalid operator')
     if op == '+':
         return term_1 + term_2
-    else:
-        return term_1 - term_2
+    return term_1 - term_2
 
-    
 while True:
     user_input = input('>> ')
     if user_input.lower()=='quit':
         break
-    first, operation, second = parse_input(user_input)
-    result = calculate(first, operation, second)
-    print(result)
+    try:
+        first, operation, second = parse_input(user_input)
+        result = calculate(first, operation, second)
+        print(result)
+    except FormulaError as e:
+        logging.exception(f"FormulaError: {e}")
+        print(f"Error: {e}. Please try again.")
+
 
 
 
@@ -112,8 +119,6 @@ Excepted output:
     False
     False
 """
-
-import re
 
 # (\+38)? ?optional
 # 0/d{9} 0+9 digits
