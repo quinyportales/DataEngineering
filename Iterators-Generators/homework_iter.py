@@ -115,7 +115,7 @@ Expected output:
 numbers = range(15)
 
 def gen_num(numbers: list[int]) -> None:
-    result = ','.join(str(i) for i in numbers)
+    result = ','.join(str(number) for number in numbers)
     print(result)
 
 gen_num(numbers)
