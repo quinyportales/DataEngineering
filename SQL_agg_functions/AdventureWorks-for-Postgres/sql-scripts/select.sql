@@ -1,72 +1,72 @@
 --1. Identify Department Groupings
-SELECT COUNT(DISTINCT humanresources.department.name) AS number_of_departments, 
-        humanresources.department.groupname
-FROM humanresources.department
-GROUP BY humanresources.department.groupname
+SELECT COUNT(DISTINCT department.name) AS number_of_departments, 
+        department.groupname
+FROM humanresources.department AS department
+GROUP BY department.groupname
 ORDER BY number_of_departments DESC;
 
 --2. Determine Maximum Salary for Each Employee
-SELECT humanresources.employee.businessentityid, 
-    humanresources.employee.loginid, 
-    humanresources.employee.jobtitle,
-    MAX(humanresources.employeepayhistory.rate) AS maximum_salary
-FROM humanresources.employee
-JOIN humanresources.employeepayhistory 
-    ON humanresources.employee.businessentityid = humanresources.employeepayhistory.businessentityid
-GROUP BY humanresources.employee.businessentityid, 
-    humanresources.employee.loginid, 
-    humanresources.employee.jobtitle
+SELECT employee.businessentityid, 
+    employee.loginid, 
+    employee.jobtitle,
+    MAX(employee_pay_history.rate) AS maximum_salary
+FROM humanresources.employee AS employee
+JOIN humanresources.employeepayhistory AS employee_pay_history
+    ON employee.businessentityid = employee_pay_history.businessentityid
+GROUP BY employee.businessentityid, 
+    employee.loginid, 
+    employee.jobtitle
 ORDER BY maximum_salary DESC, 
-    humanresources.employee.businessentityid;
+    employee.businessentityid;
 
 --3. Minimum Product Price by Subcategory
-SELECT production.productsubcategory.productsubcategoryid,
-    production.productsubcategory.name,
-    MIN(sales.salesorderdetail.unitprice) AS min_unit_price
-FROM production.productsubcategory
-JOIN production.product 
-    ON production.productsubcategory.productsubcategoryid = production.product.productsubcategoryid
-JOIN sales.salesorderdetail 
-    ON production.product.productid = sales.salesorderdetail.productid
-GROUP BY production.productsubcategory.productsubcategoryid, 
-    production.productsubcategory.name
-ORDER BY production.productsubcategory.productsubcategoryid ASC;
+SELECT product_subcategory.productsubcategoryid,
+    product_subcategory.name,
+    MIN(sales_order.unitprice) AS min_unit_price
+FROM production.productsubcategory AS product_subcategory
+JOIN production.product AS product
+    ON product_subcategory.productsubcategoryid = product.productsubcategoryid
+JOIN sales.salesorderdetail AS sales_order
+    ON product.productid = sales_order.productid
+GROUP BY product_subcategory.productsubcategoryid, 
+    product_subcategory.name
+ORDER BY product_subcategory.productsubcategoryid ASC;
 
 --4. Count of Subcategories within Each Product Category
-SELECT production.productcategory.productcategoryid,
-    production.productcategory.name,
-    COUNT(production.productsubcategory.productsubcategoryid) AS total_subcategories
-FROM production.productcategory
-JOIN production.productsubcategory 
-    ON production.productsubcategory.productcategoryid = production.productcategory.productcategoryid
-GROUP BY production.productcategory.productcategoryid, 
-    production.productcategory.name
-ORDER BY production.productcategory.productcategoryid ASC;
+SELECT product_subcategory.productcategoryid,
+    productcategory.name,
+    COUNT(product_subcategory.productsubcategoryid) AS total_subcategories
+FROM production.productcategory AS productcategory
+JOIN production.productsubcategory AS product_subcategory
+    ON product_subcategory.productcategoryid = productcategory.productcategoryid
+GROUP BY product_subcategory.productcategoryid, 
+    productcategory.name
+ORDER BY product_subcategory.productcategoryid ASC;
 
 --5. Average Order Total by Product Subcategory
-SELECT production.productsubcategory.productsubcategoryid,
-    production.productsubcategory.name,
-    AVG(sales.salesorderdetail.unitprice * sales.salesorderdetail.orderqty * (1 - sales.salesorderdetail.unitpricediscount)) AS avg_order_total
-FROM sales.salesorderdetail
-JOIN production.product 
-    ON sales.salesorderdetail.productid = production.product.productid
-JOIN production.productsubcategory 
-    ON production.productsubcategory.productsubcategoryid = production.product.productsubcategoryid
-GROUP BY production.productsubcategory.productsubcategoryid, 
-    production.productsubcategory.name
-ORDER BY production.productsubcategory.productsubcategoryid ASC;
+SELECT product_subcategory.productsubcategoryid,
+    product_subcategory.name,
+    AVG(sales_order.unitprice * sales_order.orderqty * (1 - sales_order.unitpricediscount)) AS avg_order_total
+FROM sales.salesorderdetail AS sales_order
+JOIN production.product AS product
+    ON sales_order.productid = product.productid
+JOIN production.productsubcategory AS product_subcategory
+    ON product_subcategory.productsubcategoryid = product.productsubcategoryid
+GROUP BY product_subcategory.productsubcategoryid, 
+    product_subcategory.name
+ORDER BY product_subcategory.productsubcategoryid ASC;
 
 --6. Employee with Highest Salary and Their Rate Appointment Date
-SELECT humanresources.employeepayhistory.businessentityid, 
-    humanresources.employeepayhistory.rate AS maximum_salary,
-    humanresources.employeepayhistory.ratechangedate
-FROM humanresources.employeepayhistory
-JOIN ( SELECT humanresources.employeepayhistory.businessentityid,
-            MAX(humanresources.employeepayhistory.rate) AS maximum_salary
-        FROM humanresources.employeepayhistory
-        GROUP BY humanresources.employeepayhistory.businessentityid
+SELECT employee_pay_history.businessentityid, 
+    employee_pay_history.rate AS maximum_salary,
+    employee_pay_history.ratechangedate
+FROM humanresources.employeepayhistory AS employee_pay_history
+JOIN ( SELECT employee_pay_history.businessentityid,
+            MAX(employee_pay_history.rate) AS maximum_salary
+        FROM humanresources.employeepayhistory AS employee_pay_history
+        GROUP BY employee_pay_history.businessentityid
 ) AS max_salary 
-ON humanresources.employeepayhistory.businessentityid = max_salary.businessentityid
-   AND humanresources.employeepayhistory.rate = max_salary.maximum_salary
-ORDER BY humanresources.employeepayhistory.ratechangedate ASC
+ON employee_pay_history.businessentityid = max_salary.businessentityid
+   AND employee_pay_history.rate = max_salary.maximum_salary
+ORDER BY employee_pay_history.ratechangedate ASC
 LIMIT 1;
