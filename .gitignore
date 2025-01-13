@@ -22,5 +22,7 @@ __pycache__/
 # Ignorar carpetas tmp o archivos temporales
 tmp/
 *.tmp
+
 Algorithms/venv/
+ExceptionContexMan.lnk
 
