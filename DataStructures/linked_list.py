@@ -1,5 +1,5 @@
 """ This module contains the class Linked List for a Data Structure representation """
-from typing import Any
+from typing import Any, Iterator
 from node import Node
 
 class LinkedList:
@@ -55,70 +55,59 @@ class LinkedList:
                 return index
             current = current.next  # Move to the next node
             index += 1  # Increment the index
-
         # If we reach here, the data was not found
         raise ValueError("Item is not in the list")
 
     def insert(self, index: int, data: Any) -> None:
         """
         Insert the element at a specific index with the elements shifted to the right
-        
         If index is 0 uses prepennd, if index is length uses appends
         """
-
         if index == 0:
         # Insert at the beginning
             self.prepend(data)
             return
-
         if index == self.lenght:
             # Insert at the end
             self.append(data)
             return
-
         # Insert in the middle
         new_node = Node(data)
         current = self.head
         for _ in range(index - 1):  # Stop at the node before the desired index
             current = current.next
-
         if current.next == self.tail:
             self.tail = current
-
         # Update links to insert the new node
         new_node.next = current.next
         current.next = new_node
-
         self.lenght += 1
 
     def delete(self, index : int) -> None:
         """Deletes the element by index."""
         current = self.head
-
         if index == 0:
             # delete at the beginning
             current = self.head.next
             self.head = current
             self.lenght -= 1
             return
-
         # delete at the middle
         for _ in range(index-1):  # Stop at the node before the desired index
             current = current.next
-
         if current.next == self.tail:
             #deleting at the end
             self.tail = current
-
         current.next = current.next.next
         self.lenght -= 1
 
+    def __iter__(self)-> Iterator[Any]:
+        """Returns linked_list as an iterable"""
+        current = self.head
+        while current:
+            yield current.data
+            current = current.next
+
     def __str__(self) -> str:
         """Returns the string representation for the Linked List class instances"""
-        nodes = []
-        current = self.head
-        # Traverse the list
-        while current is not None:
-            nodes.append(str(current.data))
-            current = current.next
-        return " -> ".join(nodes)
+        return " -> ".join(str(data) for data in self)

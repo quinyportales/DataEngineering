@@ -10,11 +10,13 @@ if __name__ == '__main__':
     linked_list.append(1)
     linked_list.append(2)
     linked_list.append(3)
-    # Displaying the head of the list (should be 1)
     print("***Working Linked Lists***")
+    # Displaying the head of the list (should be 1)
+    print ("Head of the list")
     print(linked_list.head.data)
 
-    # Displaying the head of the list (should be 3)
+    # Displaying the tail of the list (should be 3)
+    print ("Tail of the list")
     print(linked_list.tail.data)
 
     #prepending elements
@@ -24,12 +26,15 @@ if __name__ == '__main__':
     linked_list.append("new tail")
 
     # Displaying the head of the list (should be 'new head')
+    print ("New head of the list")
     print(linked_list.head.data)
 
     # Displaying the head of the list (should be 'new tail')
+    print ("New tail of the list")
     print(linked_list.tail.data)
 
     # Displaying the lenght of the list (should be 5)
+    print ("Lenght of the list")
     print(linked_list.lenght)
 
     # Insert at the beginning
@@ -92,22 +97,20 @@ if __name__ == '__main__':
 
     #deleting the head of the queue
     queue.dequeue()
-    # Displaying the hea  of the queue (should be second)
+    # Displaying the head  of the queue (should be second)
     print("The head of the queue:", queue.peak())
 
     #deleting the head of the queue
     queue.dequeue()
-    # Displaying the hea  of the queue (should be third)
+    # Displaying the head  of the queue (should be third)
     print("The head of the queue:", queue.peak())
 
     #Implementing the stack structure
-    # Instantiating a Stack object
     stack = Stack()
 
     # Checking if the stack is empty
     print("\n ***Working Stacks***")
-    print("is empty?",stack.is_empty())
-    # Pushing items onto the stack
+    print("is empty? ",stack.is_empty())
     stack.push(1)
     stack.push(2)
     stack.push(3)
@@ -169,7 +172,3 @@ if __name__ == '__main__':
 
     #deleting a node with one child
     bs_tree.delete(18)
-
-    #deleting a node with two children
-    bs_tree.delete(25)
-    

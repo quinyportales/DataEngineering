@@ -1,33 +1,22 @@
 """ This module contains the class queue for a Data Structure representation """
 from typing import Any
-from node import Node
+from linked_list import LinkedList
 
-class QueueStruct:
+class QueueStruct (LinkedList):
     """This class creates a queue from multiple Nodes objects 
-     (Singly Linked List) """
+     (Single Linked List) """
 
     def __init__(self) -> None:
         """
         Initialize a Queue_Struct instance. This defines  the FIFO operations
         for the nodes
         """
-         #initializing the first and last elements of the queue
-        self.head: Node = None
-        self.tail: Node = None
+        super().__init__()
 
     def enqueue(self, data) -> None:
         """Adding a node to the end of queue"""
         #creating a node
-        new_node : Node = Node(data)
-
-        if self.tail is  None:
-            # the only element on the queue
-            self.head = self.tail = new_node
-        else:
-            #updating next
-            self.tail.next = new_node
-            #adding a new tail
-            self.tail = new_node
+        self.append(data)
 
     def peak(self) -> Any:
         """Returns the head element of the queue"""
@@ -39,4 +28,4 @@ class QueueStruct:
         """This deletes the node on the head of the queue"""
         if self.head is  None:
             print("The queue is empty")
-        self.head = self.head.next
+        super().delete(0)

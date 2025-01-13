@@ -1,8 +1,9 @@
 """ This module contains the class stack for a Data Structure representation """
 from typing import Any
+from linked_list import LinkedList
 from node import Node
 
-class Stack:
+class Stack (LinkedList):
     """This class creates a stack from multiple Nodes objects 
      (Singly Linked List) """
 
@@ -12,29 +13,25 @@ class Stack:
         for the nodes
         """
         #initializing the element on the top of the stack
-        self.top: Node = None
+        super().__init__()
 
     def push(self, data: Node) -> None:
         """Add a node to the top of the structure"""
-        new_node : Node = Node(data)
-        #next is the previous element on top
-        new_node.next = self.top
-        #this new node will be on the  top
-        self.top = new_node
+        self.append(data)
 
     def pop(self) -> None:
         """Delete the element on top of the stack"""
-        if self.top is  None:
+        if self.tail is  None:
             print ('The stack is empty')
         # set the next element as the top of the stack
-        self.top = self.top.next
+        super().delete(self.lenght -1)
 
     def peak(self) -> Any:
         """Returns the element on top of the stack"""
-        if self.top is  None:
+        if self.tail is  None:
             return 'The stack is empty'
-        return self.top.data
+        return self.tail.data
 
     def is_empty(self) -> bool:
         """Returns True if the stack is empty"""
-        return self.top is None
+        return self.tail is None

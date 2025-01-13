@@ -74,7 +74,7 @@ class BinarySeachTree:
                 current = current.right  # Go to the right subtree
         return None  # Value not found
 
-    def delete(self, data: Any, start: Node = None, parent: Node = None) -> None:
+    def delete(self, data: Any, start: Node = None, parent: Node = None) -> "BinarySeachTree":
         """
         Deletes a node with the specified value from the tree.
 
@@ -97,7 +97,6 @@ class BinarySeachTree:
             #if the node is not in tree
             raise ValueError("Item not in tree")
 
-        #checking the childrens
         if not current.left and not current.right:
             #if the node has no childrens
             return self._remove_node_no_children(current, parent)
@@ -108,7 +107,7 @@ class BinarySeachTree:
         #if the node has one child
         return self._remove_node_one_child(current, parent)
 
-    def _remove_node_no_children(self, current: Node, parent: Node) -> None:
+    def _remove_node_no_children(self, current: Node, parent: Node) -> "BinarySeachTree" :
         """
         Removes a node with no children (leaf node).
 
@@ -127,7 +126,7 @@ class BinarySeachTree:
         print(f"Leaf node {current.data} successfully deleted")
         return self
 
-    def _remove_node_one_child(self, current: Node, parent: Node) -> None:
+    def _remove_node_one_child(self, current: Node, parent: Node) -> "BinarySeachTree":
         """
         Removes a node with one child.
 
@@ -140,16 +139,14 @@ class BinarySeachTree:
             self.root = current.right if current.right else current.left
             return self
 
-        #if the current node is not the root
         if parent.right == current:
-            #is current located to the right of the parent?
             parent.right = current.right if current.right else current.left
         else:
             parent.left = current.right if current.right else current.left
         print(f"One child node {current.data} successfully deleted")
         return self
 
-    def _remove_node_two_children(self, current: Node) -> None:
+    def _remove_node_two_children(self, current: Node) -> "BinarySeachTree":
         """
         Removes a node with two children by replacing it with its successor.
 
@@ -158,7 +155,7 @@ class BinarySeachTree:
         """
         #finding the succesor which will replace the deleted node
         successor = self._get_successor(current)
-        current.data = successor.data # Replace current node's value with successor's value
+        current.data = successor.data
         # Remove the successor node
         return self.delete(successor.data, current.right, current )
 
