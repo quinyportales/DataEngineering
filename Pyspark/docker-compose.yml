@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  pyspark:
+    build: .  
+    container_name: pyspark_container
+    volumes:
+      - ./regular_patients/output:/Pyspark/regular_patients/output  
+    restart: on-failure  
+
+  linter:
+    build: .  
+    container_name: pylint_container
+    entrypoint: ["./run_linter.sh"] 
+    volumes:
+      - .:/Pyspark 
+
+  tests:
+    build: .
+    container_name: tests_container
+    volumes:
+      - ./tests:/Pyspark/tests  
+    command: python -m pytest /Pyspark/tests/test_regular_patients.py
