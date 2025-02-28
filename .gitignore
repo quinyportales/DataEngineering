@@ -26,3 +26,9 @@ tmp/
 Algorithms/venv/
 ExceptionContexMan.lnk
 
+#Ignorar salidas
+Pyspark/regular_patients/input/enroll.csv
+Pyspark/regular_patients/output/*.csv
+Pyspark/regular_patients/output/*.crc
+Pyspark/regular_patients/output/result/_SUCESS
+*.lock
