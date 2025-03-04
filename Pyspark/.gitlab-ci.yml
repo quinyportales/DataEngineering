@@ -1,0 +1,39 @@
+image: docker:latest
+
+stages:
+  - build
+  - lint
+  - test
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  COMPOSE_FILE: Pyspark/docker-compose.yml 
+
+services:
+  - name: docker:dind
+    alias: docker
+
+before_script:
+  - apk add --no-cache docker-compose
+  - docker-compose --file $COMPOSE_FILE version  
+
+build:
+  stage: build
+  script:
+    - docker-compose --file $COMPOSE_FILE up -d
+  only:
+    - pyspark
+
+lint:
+  stage: lint
+  script:
+    - docker-compose --file $COMPOSE_FILE run --rm linter
+  only:
+    - pyspark
+
+test:
+  stage: test
+  script:
+    - docker-compose --file $COMPOSE_FILE run --rm tests
+  only:
+    - pyspark
