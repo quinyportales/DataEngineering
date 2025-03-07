@@ -9,6 +9,7 @@ venv/
 # Ignorar carpetas __pycache__ 
 __pycache__/
 
+
 # Ignorar archivos .log 
 *.log
 
@@ -26,3 +27,13 @@ tmp/
 Algorithms/venv/
 ExceptionContexMan.lnk
 
+#Ignorar salidas
+Pyspark/regular_patients/output/*.csv
+Pyspark/regular_patients/output/*.crc
+Pyspark/regular_patients/output/result/_SUCESS
+*.lock
+Pyspark/setup.py
+Pyspark/regular_patients/logs/*.log
+Pyspark/.gitlab-ci.yml
+*.pylintrc
+Pyspark/*.toml
