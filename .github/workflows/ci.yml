@@ -1,0 +1,70 @@
+name: CI/CD for Pyspark
+
+on:
+  push:
+    branches:
+      - feature_pyspark
+  pull_request:
+    branches:
+      - feature_pyspark
+jobs:
+  regular-patients:
+    runs-on : ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Build and Start Containers
+        working-directory: Pyspark
+        run: docker-compose up --build -d
+
+      - name: Run regular-patients-main
+        working-directory: Pyspark
+        run: docker-compose run --rm pyspark
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Build and Start Containers
+        working-directory: Pyspark
+        run: docker-compose up --build -d
+
+      - name: Run Pylint
+        working-directory: Pyspark
+        run: docker-compose run --rm linter
+
+      - name: Shut down containers
+        working-directory: Pyspark
+        run: docker-compose down
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Build and Start Containers
+        working-directory: Pyspark
+        run: docker-compose up --build -d
+
+      - name: Run tests
+        working-directory: Pyspark
+        run: docker-compose run --rm tests
+
+      - name: Shut down containers
+        working-directory: Pyspark
+        run: docker-compose down
