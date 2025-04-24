@@ -3,10 +3,10 @@ name: CI/CD for Pyspark
 on:
   push:
     branches:
-      - feature_pyspark
+      - dev
   pull_request:
     branches:
-      - feature_pyspark
+      - dev
 jobs:
   regular-patients:
     runs-on : ubuntu-latest
@@ -18,11 +18,11 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Build and Start Containers
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose up --build -d
 
       - name: Run regular-patients-main
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose run --rm pyspark
 
   lint:
@@ -35,15 +35,15 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Build and Start Containers
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose up --build -d
 
       - name: Run Pylint
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose run --rm linter
 
       - name: Shut down containers
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose down
 
   test:
@@ -58,13 +58,13 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y docker-compose
 
       - name: Build and Start Containers
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose up --build -d
 
       - name: Run tests
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose run --rm tests
 
       - name: Shut down containers
-        working-directory: Pyspark
+        working-directory: regular_patients_pyspark
         run: docker-compose down
