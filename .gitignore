@@ -1,28 +1,31 @@
-# Ignorar archivos .env 
 *.env
 venv/
-
-
-# Ignorar archivos .vs
 *.vs
-
-# Ignorar carpetas __pycache__ 
 __pycache__/
+
 
 # Ignorar archivos .log 
 *.log
-
-# Ignorar archivos .sln
 *.sln
 
-# Ignorar archivos pyproj
+# pyproj
 *.pyproj
 *.pyproj.user
 
-# Ignorar carpetas tmp o archivos temporales
+# Ignoring temp
 tmp/
 *.tmp
 
 Algorithms/venv/
 ExceptionContexMan.lnk
 
+#Ignoring the output
+Pyspark/regular_patients/output/*.csv
+Pyspark/regular_patients/output/*.crc
+Pyspark/regular_patients/output/result/_SUCESS
+*.lock
+Pyspark/setup.py
+Pyspark/regular_patients/logs/*.log
+Pyspark/.gitlab-ci.yml
+*.pylintrc
+Pyspark/*.toml

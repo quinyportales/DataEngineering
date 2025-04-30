@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  pyspark:
+    build: .
+    environment:
+      - PYARROW_IGNORE_TIMEZONE=1
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
+
+  linter:
+    build: .
+    environment:
+      - PYLINTHOME=/tmp/.cache
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
+    entrypoint: ["python", "-m", "pylint", "regular_patients.main", "regular_patients.regular_patients"]
+
+  tests:
+    build: .
+    environment:
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
+    command: python -m pytest tests/test_regular_patients.py
