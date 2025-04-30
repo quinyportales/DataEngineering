@@ -1,4 +1,4 @@
-name: CI/CD for Pyspark
+name: CI/CD for regular_patients_pyspark
 
 on:
   push:
@@ -7,26 +7,11 @@ on:
   pull_request:
     branches:
       - dev
+
 jobs:
-  regular-patients:
-    runs-on : ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Docker Compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
-
-      - name: Build and Start Containers
-        working-directory: regular_patients_pyspark
-        run: docker-compose up --build -d
-
-      - name: Run regular-patients-main
-        working-directory: regular_patients_pyspark
-        run: docker-compose run --rm pyspark
-
   lint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,7 +21,7 @@ jobs:
 
       - name: Build and Start Containers
         working-directory: regular_patients_pyspark
-        run: docker-compose up --build -d
+        run: docker-compose up --build -d --force-recreate --remove-orphans
 
       - name: Run Pylint
         working-directory: regular_patients_pyspark
@@ -44,11 +29,11 @@ jobs:
 
       - name: Shut down containers
         working-directory: regular_patients_pyspark
-        run: docker-compose down
+        run: docker-compose down -v
 
   test:
     runs-on: ubuntu-latest
-    needs: lint 
+    needs: lint
 
     steps:
       - name: Checkout repository
@@ -59,7 +44,7 @@ jobs:
 
       - name: Build and Start Containers
         working-directory: regular_patients_pyspark
-        run: docker-compose up --build -d
+        run: docker-compose up --build -d --force-recreate --remove-orphans
 
       - name: Run tests
         working-directory: regular_patients_pyspark
@@ -67,4 +52,27 @@ jobs:
 
       - name: Shut down containers
         working-directory: regular_patients_pyspark
-        run: docker-compose down
+        run: docker-compose down -v
+
+  regular-patients:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Build and Start Containers
+        working-directory: regular_patients_pyspark
+        run: docker-compose up --build -d --force-recreate --remove-orphans
+
+      - name: Run regular-patients-main
+        working-directory: regular_patients_pyspark
+        run: docker-compose run --rm pyspark
+
+      - name: Shut down containers
+        working-directory: regular_patients_pyspark
+        run: docker-compose down -v

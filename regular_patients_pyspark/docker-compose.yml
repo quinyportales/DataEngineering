@@ -3,24 +3,22 @@ version: '3'
 services:
   pyspark:
     build: .
-    container_name: pyspark_container
     environment:
       - PYARROW_IGNORE_TIMEZONE=1
-    volumes:
-      - .:/Pyspark
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
 
   linter:
-    build: .  
-    container_name: pylint_container
+    build: .
     environment:
       - PYLINTHOME=/tmp/.cache
-    entrypoint: ["python", "-m", "pylint", "regular_patients/main.py", "regular_patients/regular_patients.py"]
-    volumes:
-      - .:/Pyspark
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
+    entrypoint: ["python", "-m", "pylint", "regular_patients.main", "regular_patients.regular_patients"]
 
   tests:
-    build: .  
-    container_name: tests_container
-    volumes:
-      - ./tests:/Pyspark/tests  
-    command: python -m pytest /Pyspark/tests/test_regular_patients.py
+    build: .
+    environment:
+      - PYTHONPATH=/regular_patients_pyspark
+    working_dir: /regular_patients_pyspark
+    command: python -m pytest tests/test_regular_patients.py

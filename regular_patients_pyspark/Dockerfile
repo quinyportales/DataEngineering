@@ -1,25 +1,29 @@
 FROM bitnami/spark:latest
 
-# Adding PYTHONPATH and workdirectory
-ENV PYTHONPATH="${PYTHONPATH}:/Pyspark"
-ENV PYARROW_IGNORE_TIMEZONE=1
-WORKDIR /Pyspark
+# Variables de entorno
+ENV PYARROW_IGNORE_TIMEZONE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH="/regular_patients_pyspark"
 
 
+# Directorio de trabajo
+WORKDIR /regular_patients_pyspark
+
+# Instalar dependencias de Python
 COPY requirements.txt .
-
-
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Crear directorios de entrada/salida
+USER root
+RUN mkdir -p /regular_patients_pyspark/regular_patients/input \
+             /regular_patients_pyspark/regular_patients/output \
+    && chmod -R 777 /regular_patients_pyspark/regular_patients
 
-RUN mkdir -p /Pyspark/regular_patients/output && chmod -R 777 /Pyspark/regular_patients/output
-RUN mkdir -p /Pyspark/regular_patients/input && chmod -R 777 /Pyspark/regular_patients/input
-
-
+# Copiar código fuente
 COPY . .
 
+# Copiar configuración específica
+COPY regular_patients/config/log4j.properties /regular_patients_pyspark/regular_patients/config/log4j.properties
 
-COPY regular_patients/config/log4j.properties /Pyspark/regular_patients/config/log4j.properties
-
-# Executing main script
+# Comando por defecto
 CMD ["python", "-m", "regular_patients.main"]
