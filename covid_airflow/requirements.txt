@@ -1,0 +1,7 @@
+pyspark==3.5.1
+pytest==8.3.4
+pylint==3.3.4
+minio==7.2.15
+psycopg2-binary==2.9.10
+matplotlib
+streamlit
