@@ -29,3 +29,6 @@ Pyspark/regular_patients/logs/*.log
 Pyspark/.gitlab-ci.yml
 *.pylintrc
 Pyspark/*.toml
+
+covid_airflow/jars
+covid_airflow/logs/*.log

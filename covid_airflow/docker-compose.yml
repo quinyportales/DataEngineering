@@ -1,0 +1,90 @@
+services:
+  airflow_postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./include:/opt/airflow/include
+    networks:
+      - airflow_net
+  
+  airflow-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - airflow_postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: 'v8TZT2ZrdfBO8SdkT4AQVVuu_TmamRG3f7Ja_6EQ3Ag='
+      AIRFLOW__WEBSERVER__PORT: 8080
+      PYTHONPATH: /opt/airflow
+    entrypoint: ["/opt/airflow/entrypoint.sh"]
+    command: webserver
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./include:/opt/airflow/include
+    ports:
+      - "8080:8080"
+    networks:
+      - airflow_net
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - airflow_postgres
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: 'v8TZT2ZrdfBO8SdkT4AQVVuu_TmamRG3f7Ja_6EQ3Ag='
+      PYTHONPATH: /opt/airflow
+    entrypoint: ["/opt/airflow/entrypoint.sh"]
+    command: scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./include:/opt/airflow/include
+    networks:
+      - airflow_net
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9010:9000"
+      - "9011:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - airflow_net
+
+  warehouse_postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: data_warehouse
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./include:/opt/airflow/include
+    networks:
+      - airflow_net
+  
+volumes:
+  minio_data:
+
+networks:
+  airflow_net:
+    driver: bridge
